@@ -137,7 +137,7 @@ def searchFrom(maze, startRow, startColumn):
     return found
 
 
-# เริ่มต้นเกม
+# เริ่มต้นเกมม
 myMaze = Maze('maze2.txt')
 myMaze.drawMaze()
 myMaze.updatePosition(myMaze.startRow, myMaze.startCol)
