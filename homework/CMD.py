@@ -57,8 +57,8 @@ def move(x, y, visited):
             if (nx, ny) not in visited and maze[ny][nx] in (" ", "e"):
                 possible_moves += 1  
 
-                maze[ny][nx] = "s"  
-                maze[y][x] = "o" 
+                maze[ny][nx] = "P"  
+                maze[y][x] = " " 
                 print_maze()
 
                 if move(nx, ny, visited): 
@@ -72,3 +72,5 @@ def move(x, y, visited):
     return False
 
 move(start[0], start[1], set())
+
+
