@@ -1,31 +1,15 @@
 import time
 import os
 
-# เขาวงกตในรูปแบบ List
-maze = [
-    list("++++++++++++++++++++++++++++++++++++++++++++++"),
-    list("+ s             +                            +"),
-    list("+  ++++++++++  +++++++++++++  +++++++  ++++  +"),
-    list("+           +                 +        +     +"),
-    list("+  +++++++  +++++++++++++  +++++++++++++++++++"),
-    list("+  +     +  +           +  +                 +"),
-    list("+  +  +  +  +  +  ++++  +  +  +++++++++++++  +"),
-    list("+  +  +  +  +  +  +     +  +  +  +        +  +"),
-    list("+  +  ++++  +  ++++++++++  +  +  ++++  +  +  +"),
-    list("+  +     +  +              +           +  +  +"),
-    list("+  ++++  +  ++++++++++++++++  +++++++++++++  +"),
-    list("+     +  +                    +              +"),
-    list("++++  +  ++++++++++++++++++++++  ++++++++++  +"),
-    list("+  +  +                    +     +     +  +  +"),
-    list("+  +  ++++  +++++++++++++  +  ++++  +  +  +  +"),
-    list("+  +  +     +     +     +  +  +     +     +  +"),
-    list("+  +  +  +++++++  ++++  +  +  +  ++++++++++  +"),
-    list("+                       +  +  +              +"),
-    list("++++  +  +  ++++++++++  +  +  +  +++++++++++++"),
-    list("+++++++++++++++++++++++e++++++++++++++++++++++"),
-]
 
-# หาตำแหน่งของ 's' และ 'e'
+def load_maze(filename):
+    with open(filename, "r") as file:
+        return [list(line.strip()) for line in file.readlines()]
+
+
+maze = load_maze("Maze/maze1/maze1.txt")
+
+
 start = None
 exit_pos = None
 
@@ -36,50 +20,55 @@ for y in range(len(maze)):
         if maze[y][x] == "e":
             exit_pos = (x, y)
 
-# ทิศทางการเคลื่อนที่ (ขวา, ลง, ซ้าย, ขึ้น) ตามลำดับ
+
+if start is None or exit_pos is None:
+    print("❌ Error: ไม่พบ 's' (จุดเริ่มต้น) หรือ 'e' (ทางออก) ในไฟล์ maze1.txt")
+    exit()
+
+
 directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
-# ฟังก์ชันเคลียร์หน้าจอ
+
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
-# ฟังก์ชันแสดงผลเขาวงกต
+
 def print_maze():
     clear_screen()
     for row in maze:
         print("".join(row))
     time.sleep(0.1)
 
-# ฟังก์ชันให้ 's' เดินทางเดียว (DFS) และแสดง 'D' ที่ทางตัน
+
 def move(x, y, visited):
     if (x, y) == exit_pos:
-        print("\n\tEND\t\n")
-        return True  # เจอทางออก
+        print("\n END \n")
+        return True 
 
-    visited.add((x, y))  # จำตำแหน่งที่เดินผ่าน
+    visited.add((x, y)) 
 
-    possible_moves = 0  # นับจำนวนทางที่เดินได้
+    possible_moves = 0 
 
-    # ลองเดินไปในแต่ละทิศทาง
     for dx, dy in directions:
         nx, ny = x + dx, y + dy
 
-        if (nx, ny) not in visited and maze[ny][nx] in (" ", "e"):
-            possible_moves += 1  # ถ้ามีทางเดินเพิ่ม
 
-            maze[ny][nx] = "S"  # เดินหน้า
-            maze[y][x] = "w"  # ลบตำแหน่งเดิมออก
-            print_maze()
+        if 0 <= ny < len(maze) and 0 <= nx < len(maze[ny]):
+            if (nx, ny) not in visited and maze[ny][nx] in (" ", "e"):
+                possible_moves += 1  
 
-            if move(nx, ny, visited):  # ถ้าทางนี้ไปได้เรื่อย ๆ ก็เดินต่อ
-                return True
+                maze[ny][nx] = "s"  
+                maze[y][x] = "o" 
+                print_maze()
 
-    # ถ้าเดินไม่ได้เลย → แสดง 'D' ที่จุดนี้
+                if move(nx, ny, visited): 
+                    return True
+
+
     if possible_moves == 0:
         maze[y][x] = "D"
         print_maze()
 
-    return False  # ไม่มีทางไปต่อแล้ว
+    return False
 
-# เริ่มต้นเคลื่อนที่จาก 's'
 move(start[0], start[1], set())
