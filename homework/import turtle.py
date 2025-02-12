@@ -101,6 +101,7 @@ def searchFrom(maze, startRow, startColumn):
         maze.t.write("Turtle Win", align="center", font=("Arial", 24, "normal"))
         maze.t.hideturtle()
         turtle.done()
+        turtle.bye()
         return True
 
     maze.updatePosition(startRow, startColumn, TRIED)
@@ -123,3 +124,4 @@ except FileNotFoundError:
     print("Error: 'maze2.txt' not found. Make sure the file is in the correct directory.")
 except ValueError as e:
     print(f"Error: {e}")
+    
