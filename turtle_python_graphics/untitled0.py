@@ -154,7 +154,7 @@ def setupMaze(grid):
                 sprite.goto(screen_x, screen_y)      # move turtle to the x and y location
 
 
-# ############ main program starts here  #######################
+# ############ main program starts here  ######################
 
 maze = Maze()                # enable the maze class
 sprite = sprite()            # enable the sprite  class
